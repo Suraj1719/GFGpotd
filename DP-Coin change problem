@@ -1,0 +1,76 @@
+//approach-1 (Without dynamic programming)
+
+public class Solution {
+
+	public static void main(String[] args) {
+		int rupees=18;
+		//this is simply we use greedy method and call for repeated value every time
+		//so we can use dp and create a array to store the value and when it called we
+		//simply give it called as memotization
+		int a[]= {5,7,1};
+		int ans=minCoins(rupees,a);
+System.out.println(ans);
+	}
+
+	private static int minCoins(int n, int[] a) {
+		if(n==0)
+			return 0;
+		int ans=Integer.MAX_VALUE;
+		for(int i=0;i<a.length;i++) {
+			if(n-a[i]>=0) {
+				int subAns=minCoins(n-a[i],a);
+				
+				if(subAns!=Integer.MAX_VALUE && subAns+1<ans)
+					ans=subAns+1;
+			}
+		}
+		return ans;
+	}
+
+}
+
+//dynamic programing approach
+
+import java.util.Arrays;
+public class DynamicProgrammingBasic {
+
+	public static void main(String[] args) {
+		int n = 18;
+		int a[] = {7, 5, 1};
+		
+		int dp[] = new int[n+1];
+		Arrays.fill(dp, -1);
+		dp[0] = 0;
+		
+		int ans = minCoins(n, a, dp);
+		System.out.println(ans);
+		
+// gives minimum number of coins to make rupee from 0 to 18
+		for(int x: dp) {
+			System.out.print(x+" ");
+		}
+    }
+	
+	static int minCoins(int n, int a[], int dp[]) {
+		
+		if(n == 0) return 0;
+		
+		int ans = Integer.MAX_VALUE;
+		
+		for(int i = 0; i<a.length; i++) {
+			if(n-a[i] >= 0) {
+				int subAns = 0;
+				if(dp[n-a[i]] != -1) {
+					subAns = dp[n-a[i]];
+				} else {
+					subAns = minCoins(n-a[i], a, dp);
+				}
+				if(subAns != Integer.MAX_VALUE && 
+						subAns + 1 < ans) {
+					ans = subAns + 1;
+				}
+			}
+		}
+		return dp[n] = ans;
+	}
+}
