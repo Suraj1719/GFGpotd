@@ -1,0 +1,82 @@
+Given an array arr[] of size N and an integer K. The task is to find the minimum number of elements that should be removed, such that Amax-Amin<=K. After the removal of elements, Amax and Amin is considered among the remaining elements.
+
+//note : try   Can you solve the probelm without using any extra space and O(N*log(N)) time complexity?
+
+approach-1(by sorting and sliding window)
+class Solution {
+    int removals(int[] arr, int n, int k) {
+        // using slidingWindow
+        //O(nlogn)
+        int res=0;
+        Arrays.sort(arr);
+        int i=0;
+        int j=0;
+        while(j<n){
+            if(arr[j]-arr[i]<=k)
+                j++;
+            else if(i<j)
+                i++;
+            res=Math.max(res,j-i);
+        }
+        return n-res;
+    }
+}
+
+approach-2(backtracing but it gives tle)
+
+//User function Template for Java
+
+class Solution {
+    int removals(int[] arr, int n, int k) {
+        // by using recursion we get tle
+        //so we use dp(memoization)
+        Arrays.sort(arr);
+        return recursion(0,n-1,arr,k);
+    }
+    int recursion(int s,int e,int []arr,int k){
+        if(s>e)
+        return 0;
+        if(arr[e]-arr[s]<=k)
+        return 0;
+        //delete from first
+        int op1=recursion(s+1,e,arr,k);
+        //delete from last
+        int op2=recursion(s,e-1,arr,k);
+        
+        return Math.min(op1,op2)+1;
+    }
+}
+//approach-3(use DP in backtracing)
+
+//User function Template for Java
+
+class Solution {
+    int removals(int[] arr, int n, int k) {
+        // by using recursion we get tle
+        //so we use dp(memoization)
+        //time =O(nlogn)
+        //space complexity = O(n^2)
+        int dp[][]=new int[n][n];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                dp[i][j]=-1;
+            }
+        }
+        Arrays.sort(arr);
+        return recursion(0,n-1,arr,k,dp);
+    }
+    int recursion(int s,int e,int []arr,int k,int dp[][]){
+        if(s>e)
+        return 0;
+        if(arr[e]-arr[s]<=k)
+        return 0;
+        if(dp[s][e]!=-1)
+        return dp[s][e];
+        //delete from first
+        int op1=recursion(s+1,e,arr,k,dp);
+        //delete from last
+        int op2=recursion(s,e-1,arr,k,dp);
+        //return Math.min(op1,op2)+1;
+        return dp[s][e]= Math.min(op1,op2)+1;
+    }
+}
