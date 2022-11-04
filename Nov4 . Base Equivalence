@@ -1,0 +1,17 @@
+Given a number (n) and no. of digits (m) to represent the number, we have to check if we can represent n using exactly m digits in any base from 2 to 32.
+
+class Solution
+{
+    String baseEquiv(int n, int m)
+    {
+        
+        int i=2;
+        while(i<=32){
+            int digit=(int)(Math.log10(n)/Math.log10(i));
+            if(digit+1==m)
+                return "Yes";
+            i++;
+        }
+        return "No";
+    }
+}
