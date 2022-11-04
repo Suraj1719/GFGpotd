@@ -1,0 +1,48 @@
+You live in Geek land. Geek land can be seen as a grid of shape N x M.There are K enemy at K positions. Each enemy blocks the row and column to which it belongs. You have to find the largest continuous area that is not blocked.
+No two enemies share the same row or the same column.
+
+class Solution {
+    public static int largestArea(int n,int m,int k,int[][] enemy) {
+        // we can create a matrix and store all avlues and find ans
+        //take time complexity and space O(n*m)
+        
+        //optimal approach
+        ArrayList<Integer> row=new ArrayList<>();
+        //adding all rows where enemy present
+        row.add(-1);//start of matrix
+        for(int []i:enemy){
+            row.add(i[0]-1);//as given are in 1 indexing
+        }
+        row.add(n);//end of matrix
+        //sort the row
+        Collections.sort(row);
+        //find maximum gap bet two enemy row
+        int maxRow=0;
+        for(int i=1;i<row.size();i++){
+            int prev=row.get(i-1);
+            int cur=row.get(i);
+            maxRow=Math.max(maxRow,cur-prev-1);
+        }
+        
+        //similar for colomns
+         ArrayList<Integer> col=new ArrayList<>();
+        //adding all rows where enemy present
+        col.add(-1);//start of matrix
+        for(int []i:enemy){
+            col.add(i[1]-1);//as given are in 1 indexing
+        }
+        col.add(m);//end of matrix
+        //sort the row
+        Collections.sort(col);
+        //find maximum gap bet two enemy row
+        int maxCol=0;
+        for(int i=1;i<col.size();i++){
+            int prev=col.get(i-1);
+            int cur=col.get(i);
+            maxCol=Math.max(maxCol,cur-prev-1);
+        }
+        
+        return maxRow*maxCol;
+    }
+}
+ 
