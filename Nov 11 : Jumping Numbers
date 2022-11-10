@@ -1,0 +1,58 @@
+Given a positive number X. Find the largest Jumping Number which is smaller than or equal to X. 
+Jumping Number: A number is called Jumping Number if all adjacent digits in it differ by only 1. All single-digit numbers are considered as Jumping Numbers. For example 7, 8987 and
+4343456 are Jumping numbers but 796, 677 and 89098 are not.
+
+Example 1:
+
+Input:
+X = 10
+Output:
+10
+Explanation:
+10 is the largest Jumping Number
+possible for X = 10.
+
+
+Example 2:
+
+Input:
+X = 50
+Output:
+45
+Explanation:
+45 is the largest Jumping Number
+possible for X = 50.
+
+
+//approach(using queue ) take time complexity of O(k) and space complexity of O(k) where k is number of jumping number create .
+
+class Solution {
+    static long jumpingNums(long X) {
+        
+        Queue<Long> q=new LinkedList<>();
+        for(long i=1;i<=9;i++){
+            q.add(i);
+        }
+        long ans=0;
+        while(!q.isEmpty()){
+            long num=q.remove();
+            if(num>X)
+            continue;
+            
+            ans=Math.max(ans,num);
+            
+            //as we can get jumping numbrt by adding 1 or minus 1 from last digit
+            int lastDigit=(int)num%10;
+            
+            if(lastDigit!=0){
+                long first=num*10+(lastDigit-1); //as we can not do -1 from 0
+                q.add(first);
+            }
+            if(lastDigit!=9){
+                long second=num*10+(lastDigit+1); //as we can not do +1 in 9
+                q.add(second);
+            }
+        }
+        return ans;
+    }
+};
