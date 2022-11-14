@@ -1,0 +1,33 @@
+Given two strings S and W. Find the number of times W appears as a subsequence of string S where
+every character of string S can be included in forming at most one subsequence.
+
+
+Expected Time Complexity: O(N^2)
+Expected Auxiliary Space: O(N)
+
+code:
+
+class Solution{
+    static int numberOfSubsequences(String S, String W){
+        // code here
+        int ans=0;
+        char arr[]=S.toCharArray();
+        char word[]=W.toCharArray();
+        while(true){
+            int i=0,j=0,flag=0;
+            while(i<S.length()){
+                if(arr[i]==word[j]){
+                   j++;
+                   arr[i]='*';
+                   if(j==word.length){
+                       ans++;flag=1;
+                       break;
+                   }
+                }
+                  i++; 
+            }
+            if(flag==0) break;
+        }
+        return ans;
+    }
+}
