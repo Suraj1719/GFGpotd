@@ -1,0 +1,116 @@
+Given an array arr[] of N Numbers. A Perfect Piece is defined as a subarray such that the difference between the minimum and the maximum value in that range is at most 1. 
+Find the Maximal Length Perfect Piece.
+
+Example 1:
+
+Input:
+N = 4
+arr[] = {8, 8, 8, 8}
+Output:
+4
+Explanation:
+The longest subarray is [1, 4]
+where maximum=8 and minimum = 8 and
+difference is 0, which is less than 1.
+Its length is 4.
+
+
+Example 2:
+
+Input:
+N = 11
+arr[] = {5, 4, 5, 5, 6, 7, 8, 8, 8, 7, 6}
+Output:
+5
+Explanation:
+The longest subarray is [6, 10]
+where maximum=8 and minimum = 7 and
+difference is 1. Its length is 5. 
+
+code:
+approach-1(BruteForce : time complexity : O(n^2)
+class Solution {
+    static int longestPerfectPiece(int[] arr, int N) {
+         // give tle
+         Arrays.sort(arr);
+         int len=0;
+         int start=-1;int end=-1;
+         for(int i=0;i<N;i++){
+             start=i;
+             int j=i;
+             int temp=arr[i];
+             while(j<N-1 && (temp==arr[j+1] || temp+1==arr[j+1])){
+             j++;
+            
+        }
+           end=j;
+            
+            len=Math.max(len,end-start+1);
+     }
+  return len;
+      }
+};
+
+approach-2:(
+
+
+ class Solution {
+      static int longestPerfectPiece(int[] arr, int N) {
+
+         TreeMap<Integer, Integer> map = new TreeMap<>();
+           int st = 0;
+
+         int ans = 0;
+
+         for(int i=0; i<N; i++)
+         {
+         int x = arr[i];
+         map.put(x, map.getOrDefault(x, 0)+1);
+
+             while(!map.isEmpty() && Math.abs(map.firstKey()-map.lastKey())>1)
+
+             {
+
+                 int key = arr[st];
+
+                 map.put(key, map.get(key)-1);
+
+                 if(map.get(key)==0) map.remove(key);
+
+                 st++;
+
+             
+             ans = Math.max(ans, i-st+1);
+
+         }
+
+         return ans;
+
+     }
+
+ };
+ 
+ approach-3(using priority queue)
+ 
+ class Solution {
+    static int longestPerfectPiece(int[] arr, int N) {
+        
+        PriorityQueue<Integer> min=new PriorityQueue<>();
+        PriorityQueue<Integer> max=new PriorityQueue<>(Collections.reverseOrder());
+        int ans=0;
+        for(int i=0,j=0;i<N;i++){
+            min.add(arr[i]);
+            max.add(arr[i]);
+            while(j<N && max.peek()-min.peek()>1){
+                max.remove(arr[j]);
+                min.remove(arr[j]);
+                j++;
+            }
+            ans=Math.max(ans,i-j+1);
+        }
+        
+        return ans;
+        
+    }
+};
+ 
