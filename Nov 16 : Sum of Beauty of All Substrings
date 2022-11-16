@@ -1,0 +1,50 @@
+Given a string S, return the sum of beauty of all its substrings.
+The beauty of a string is defined as the difference in frequencies between the most frequent and least frequent characters.
+
+//code:
+
+approach-1 :  // we can find all substring and add beauty of all substring
+
+approach-2(using sliding window)
+
+class Solution {
+    public static int beautySum(String s) {
+       
+        
+        //here we use sliding window concept
+        int ans=0;
+        int n=s.length();
+        //length of 1 and 2 string always give 0 beuty so we ignore them
+        for(int size=3;size<=n;size++){
+            int i=0;
+            int j=size;
+            int freq[]=new int[26];//store the frequency of character
+            for(int k=i;k<j;k++){
+                freq[s.charAt(k)-'a']++;
+            }
+            ans+=beauty(freq);
+            //sliding window concept . Add a character in front and remove from back
+            while(j<n){
+                freq[s.charAt(j)-'a']++;
+                freq[s.charAt(i)-'a']--;
+                 ans+=beauty(freq);
+                j++;i++;
+                
+            }
+        }
+        return ans;
+    }
+    public static int beauty(int f[]){
+        int min=Integer.MAX_VALUE;
+        int max=Integer.MIN_VALUE;
+        for(int x:f){
+            if(x!=0){
+                min=Math.min(min,x);
+                max=Math.max(max,x);
+            }
+            
+        }
+        return max-min;
+    }
+}
+        
