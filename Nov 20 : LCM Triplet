@@ -1,0 +1,30 @@
+Given a number N.Find the maximum possible LCM that can be attained by any three numbers less than or equal to N.
+Note- LCM stands for Lowest Common Multiple. Also, Numbers can be repeated.
+
+Expected Time Complexity:O(logN)
+Expected Auxillary Space:O(logN)
+
+
+Constraints:
+1<=N<=106 
+
+//code java :
+
+class Solution {
+    long lcmTriplets(long N) {
+        
+        //taking both time and space complexity of O(1)
+      
+      if(N<=2)
+      return N;
+      
+      //if n is odd
+      if((N&1)==1)
+      return N*(N-1)*(N-2);
+      if(N%6==0)//as multiple of 6 divisible by both 2 and 3
+      return (N-1)*(N-2)*(N-3);
+      
+      
+      return N*(N-1)*(N-3);
+    }
+}
