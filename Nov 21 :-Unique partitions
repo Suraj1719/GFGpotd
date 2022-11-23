@@ -1,0 +1,63 @@
+Given a positive integer n, generate all possible unique ways to represent n as sum of positive integers.
+
+Note: The generated output is printed without partitions. Each partition must be in decreasing order. Printing of all the partitions is done in reverse sorted order.
+
+Example 1:
+
+Input: n = 3
+Output: 3 2 1 1 1 1
+Explanation: For n = 3, 
+{3}, {2, 1} and {1, 1, 1}.
+ 
+
+Example 2:
+
+Input: n = 4 
+Output: 4 3 1 2 2 2 1 1 1 1 1 1
+Explanation: For n = 4, 
+{4}, {3, 1}, {2, 2}, {2, 1, 1}, {1, 1, 1, 1}.
+
+Expected Time Complexity: O(2^n)
+Expected Space Complexity: O(n)
+
+
+//java code by backtracking
+
+
+class Solution
+{
+    public ArrayList<ArrayList<Integer>> UniquePartitions(int n)
+    {
+        //backtraking
+        ArrayList<ArrayList<Integer>> ans=new ArrayList<>();
+        ArrayList<Integer> cur=new ArrayList<>();
+        int arr[]=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=i+1;
+        }
+        int index=n-1;
+        backtrack(ans,cur,index,n,arr);
+        return ans;
+        
+        
+    }
+    //here it call backtrack by index position, so that for one element 
+    //it did not repeat ans
+    void backtrack(ArrayList<ArrayList<Integer>> ans,ArrayList<Integer> cur,
+    int index,int sum,int arr[]){
+        //base case
+        if(sum<0 || index<0)
+        return;
+        
+        cur.add(arr[index]);
+        //if sum is n ,add cur list to ans list
+        if(sum-arr[index]==0)
+        ans.add(new ArrayList<>(cur));
+        
+        //else if n-sum>0 then call for n-sum
+        backtrack(ans,cur,index,sum-arr[index],arr);
+        
+        cur.remove(cur.size()-1);
+        backtrack(ans,cur,index-1,sum,arr);
+    }
+}
