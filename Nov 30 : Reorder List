@@ -1,0 +1,56 @@
+Given a singly linked list: A0→A1→...→An-2→An-1, reorder it to: A0→An-1→A1→An-2→A2→An-3→...
+For example: Given 1->2->3->4->5 its reorder is 1->5->2->4->3.
+
+Note: It is recommended do this in-place without altering the node's values.
+
+//Intution : As we have to reorder the list such that first->last->second->secondlast.......
+So we can reverse the list from mid point . So we can use first node of unreversed list of next as reversed list first node and so on ....
+
+we can fond mid point by size/2 .Or we can use slow and fast pointer which is more efficient .
+
+//code
+
+class Solution {
+    Node reorderlist(Node head) {
+        
+        if(head.next==null)
+        return head;
+        
+        Node fast=head;
+        Node slow=head;
+        Node prev=null;
+        
+        while(fast!=null && fast.next!=null){
+            prev=slow;
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        prev.next=null;
+        Node rev_head=reverse(slow);//head of reversed linked list
+        Node startHead=head;//head of original linked list
+        while(startHead!=null){
+            Node nextStart=startHead.next;
+            Node nextRev=rev_head.next;
+            startHead.next=rev_head;
+            if(nextStart!=null){
+                rev_head.next=nextStart;
+            }
+            startHead=nextStart;
+            rev_head=nextRev;
+            
+        }
+        return head;
+        
+    }
+    Node reverse(Node slow){
+        Node prev=null;
+        Node cur=slow;
+        while(cur!=null){
+            Node temp=cur.next;//we store the next node of cur as we change cur next
+            cur.next=prev;
+            prev=cur;
+            cur=temp;
+        }
+        return prev;
+    }
+}
