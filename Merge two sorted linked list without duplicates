@@ -1,0 +1,137 @@
+Merge two sorted linked list of size n1 and n2. The duplicates in two linked list should be present only once in the final sorted linked list.
+
+Examples:  
+
+Input : list1: 1->1->4->5->7
+        list2: 2->4->7->9
+Output : 1 2 4 5 7 9
+
+
+code: -
+
+
+import java.io.*;
+
+class GFG {
+
+	
+	class Node {
+		int data;
+		Node next;
+	}
+
+	// function to get a new node
+	public Node getNode(int data)
+	{
+		Node temp = new Node();
+		temp.data = data;
+		temp.next = null;
+		return temp;
+	}
+
+	// function to merge two sorted linked list in a sorted manner
+	static Node sortedMerge(Node a, Node b)
+	{
+		Node result = null;
+		
+		if (a == null) {
+			return b;
+		}
+		else if (b == null) {
+			return a;
+		}
+		
+		if (a.data <= b.data) {
+			result = a;
+			result.next = sortedMerge(a.next, b);
+		}
+		else {
+			result = b;
+			result.next = sortedMerge(a, b.next);
+		}
+		return result;
+	}
+
+
+	/* The function removes duplicates from a sorted list */
+  
+	static void removeDuplicates(Node head)
+	{
+		
+		Node current = head;
+		Node next_next;
+
+		
+		if (current == null) {
+			return;
+		}
+
+		
+		while (current.next != null)
+		{
+		
+			
+			if (current.data == current.next.data)
+			{
+			
+				
+				next_next = current.next.next;
+				current.next = next_next;
+			}
+			else { 
+				current = current.next;
+			}
+		}
+	}
+
+	
+	public Node sortedMergeWithoutDuplicates(Node head1,Node head2)
+	{
+
+		
+		Node head = sortedMerge(head1, head2);
+
+		
+		removeDuplicates(head);
+
+		return head;
+	}
+
+	
+	public void printList(Node head)
+	{
+		while (head != null) {
+			System.out.print(head.data + " ");
+			head = head.next;
+		}
+	}
+  
+  
+
+	public static void main(String[] args)
+	{
+
+		GFG l = new GFG();
+
+		// head1 : 1->1->4->5->7
+		Node head1 = l.getNode(1);
+		head1.next = l.getNode(1);
+		head1.next.next = l.getNode(4);
+		head1.next.next.next = l.getNode(5);
+		head1.next.next.next.next = l.getNode(7);
+
+		// head2 : 2->4->7->9
+		Node head2 = l.getNode(2);
+		head2.next = l.getNode(4);
+		head2.next.next = l.getNode(7);
+		head2.next.next.next = l.getNode(9);
+
+		Node head3;
+
+		head3 = l.sortedMergeWithoutDuplicates(head1, head2);
+
+		l.printList(head3);
+	}
+}
+
+// This code is contributed by lokeshmvs21.
