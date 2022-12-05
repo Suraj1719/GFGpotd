@@ -1,0 +1,87 @@
+You are given an array consisting of n integers which denote the position of a stall. You are also given an integer k which denotes the number of aggressive cows. You are given the task of assigning stalls to k cows such that the minimum distance between any two of them is the maximum possible.
+The first line of input contains two space-separated integers n and k.
+The second line contains n space-separated integers denoting the position of the stalls.
+
+Example 1:
+
+Input:
+n=5 
+k=3
+stalls = [1 2 4 8 9]
+Output:
+3
+Explanation:
+The first cow can be placed at stalls[0], 
+the second cow can be placed at stalls[2] and 
+the third cow can be placed at stalls[3]. 
+The minimum distance between cows, in this case, is 3, 
+which also is the largest among all possible ways.
+
+Example 2:
+
+Input:
+n=5 
+k=3
+stalls = [10 1 2 7 5]
+Output:
+4
+
+Expected Time Complexity: O(n*log(10^9)).
+Expected Auxiliary Space: O(1).
+
+Constraints:
+2 <= n <= 10^5
+2 <= k <= n
+0 <= stalls[i] <= 10^9
+
+
+approach-1(brute force )
+we can itrate the whole array and try to place three cow at a time in three position and find the minimum length of distane between them . and last 
+we return maximum among all the values we are get . But it take time upto exponential and give tle for given time constrant .
+
+approach-2(linear search)(time O(n) * O(n)
+
+here we can see that we are finding maximum difference among minimum diference . So we can find that can we place three cow over given array for difference from 1 to 
+max . Where we can not finf then we return its previous value;
+
+//approach-3 (using binary search )
+we can use binary search above linear search
+
+code :
+
+class Solution {
+    public static int solve(int n, int k, int[] stalls) {
+        //total it take O(n logn) time
+        Arrays.sort(stalls);
+        int left=1;//min distance
+        int right=stalls[n-1]-stalls[0];//max distance
+        while(left<=right){//binary search : - O(logn) and log n gives constant time as rage is fixed that is (max-min)
+            int mid=(left+right)/2;
+            if(isPlaceable(k,stalls,mid)){
+                left=mid+1;
+            }else
+                right=mid-1;
+        }
+
+        return right;
+    }
+    private static boolean isPlaceable(int k, int[] arr, int minDis) {
+        //time complexity : - O(n)
+        int num_placedCow=1;//for max distance we always place first  cow in first position
+        int pos_prevCow=arr[0];
+        for(int i=1;i<arr.length;i++){
+            if(arr[i]-pos_prevCow>=minDis){
+                pos_prevCow=arr[i];
+                num_placedCow++;
+                
+            }
+        }
+        if(num_placedCow>=k)
+            return true;
+        return false;
+    }
+}
+
+
+
+
