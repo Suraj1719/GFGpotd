@@ -1,0 +1,69 @@
+Given a binary grid of n*m. Find the distance of the nearest 1 in the grid for each cell.
+The distance is calculated as |i1  - i2| + |j1 - j2|, where i1, j1 are the row number and column number of the current cell, and i2, j2 are the row number and column number of the nearest cell having value 1.
+ 
+
+Example 1:
+
+Input: grid = {{0,1,1,0},{1,1,0,0},{0,0,1,1}}
+Output: {{1,0,0,1},{0,0,1,1},{1,1,0,0}}
+
+
+Expected Time Complexity: O(n*m)
+Expected Auxiliary Space: O(n*m)
+
+Constraints:
+1 ≤ n, m ≤ 500
+
+code //
+
+class Solution
+{
+    //Function to find distance of nearest 1 in the grid for each cell.
+    public int[][] nearest(int[][] grid)
+    {
+        int row=grid.length;
+        int col=grid[0].length;
+        int [][]ans=new int[row][col];
+        ArrayDeque<int[]> q = new ArrayDeque<>();
+        
+        for(int i=0;i<row;i++) {
+            for(int j=0;j<col;j++) {
+                if(grid[i][j]==1) {
+                    q.add(new int[]{i,j});
+                    ans[i][j]=0;
+                } else {
+                    ans[i][j] = -1;
+                }
+            }
+        }
+        
+        while(q.size()>0) {
+            int s = q.size();
+            while(s-->0) {
+                int[] p = q.pop();
+                int i=p[0],j=p[1];
+                if(isValid(i+1,j,row,col,ans)) {
+                    q.add(new int[]{i+1,j});
+                    ans[i+1][j]=ans[i][j]+1;
+                }
+                if(isValid(i,j+1,row,col,ans)) {
+                    q.add(new int[]{i,j+1});
+                    ans[i][j+1]=ans[i][j]+1;
+                }
+                if(isValid(i-1,j,row,col,ans)) {
+                    q.add(new int[]{i-1,j});
+                    ans[i-1][j]=ans[i][j]+1;
+                }
+                if(isValid(i,j-1,row,col,ans)) {
+                    q.add(new int[]{i,j-1});
+                    ans[i][j-1]=ans[i][j]+1;
+                }
+            }
+        }
+        return ans;
+    }
+    public static boolean isValid(int i,int j,int n,int m,int[][] ans) {
+        if(i<0 || j<0 || i>=n || j>=m || ans[i][j]!=-1) return false;
+        return true;
+    }
+}
